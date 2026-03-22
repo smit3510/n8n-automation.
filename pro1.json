@@ -1,0 +1,220 @@
+{
+  "name": "pro1",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "About your self",
+        "formDescription": "for information of your for internship",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "placeholder": "Your Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "gender",
+              "fieldType": "radio",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Male"
+                  },
+                  {
+                    "option": "Female"
+                  },
+                  {
+                    "option": "other"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Duration",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Half time"
+                  },
+                  {
+                    "option": "Full time"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "buttonLabel": "Submit"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -224,
+        0
+      ],
+      "id": "07236fec-e35c-488e-bf3e-87f80a7a173a",
+      "name": "On form submission",
+      "webhookId": "bfa011a0-6815-46e9-b4a6-838b92d19671",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "notesInFlow": true,
+      "retryOnFail": false,
+      "notes": "my 1 form "
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "14gH40X2GH2bfpou2TUzdwXedrxpbL9KoDV0Z7Rml7U4",
+          "mode": "list",
+          "cachedResultName": "Form2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14gH40X2GH2bfpou2TUzdwXedrxpbL9KoDV0Z7Rml7U4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14gH40X2GH2bfpou2TUzdwXedrxpbL9KoDV0Z7Rml7U4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Gender": "={{ $json.gender }}",
+            "Duration": "={{ $json.Duration }}",
+            "Time": "={{ $json.submittedAt }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Gender",
+              "displayName": "Gender",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Duration",
+              "displayName": "Duration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Time",
+              "displayName": "Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        0
+      ],
+      "id": "c6ab2197-b1f2-4a16-8bb3-f577bf23de9c",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "JIFOplC7ivTCnvSn",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "happyajudiya01@gmail.com",
+        "subject": "Form2 ",
+        "emailType": "text",
+        "message": "=hi smit how are you,\n\nForm Data is \nname :{{ $('On form submission').item.json.Name }}\nGendar:{{ $('On form submission').item.json.gender }}\nDuration:{{ $('On form submission').item.json.Duration }}\ntime:{{ $('On form submission').item.json.submittedAt }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        0
+      ],
+      "id": "c3ef513e-a645-4c93-8e2f-f2b4c96a2ff2",
+      "name": "Send a message",
+      "webhookId": "c64531bc-ec93-485a-8600-b9a781c00753",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yEFdUXsWvV1GAgmL",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "40706d16-dd77-46d5-b685-1d1f22b581a8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6fbd363f5bbb2353c24ac23802c530891eb2c6fe1fc55f07f736f2df1feb7996"
+  },
+  "id": "cjTH7iGMGQifXknA",
+  "tags": []
+}
